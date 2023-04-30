@@ -1,6 +1,6 @@
 namespace Code.Infrastructure
 {
-  public class BootstrapState
+  public class SceneLoader
   {
   }
 }

@@ -1,3 +1,5 @@
+using Code.Infrastructure.States;
+using Code.Services;
 using UnityEngine;
 
 namespace Code.Infrastructure
@@ -6,7 +8,7 @@ namespace Code.Infrastructure
   {
     private void Awake()
     {
-      GameStateMachine stateMachine = new GameStateMachine();
+      GameStateMachine stateMachine = new GameStateMachine(new SceneLoader(), new AllServices());
       
       stateMachine.Enter<BootstrapState>();
     }
