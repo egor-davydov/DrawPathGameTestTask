@@ -4,9 +4,18 @@ namespace Code.Gameplay.DrawingPath
 {
   public class PathObject : MonoBehaviour
   {
-    public void AddPosition(Vector2 position)
+    private LineRenderer _lineRenderer;
+
+    private void Awake() =>
+      _lineRenderer = GetComponent<LineRenderer>();
+
+    public void AddPosition(Vector3 position)
     {
-      
+      _lineRenderer.positionCount++;
+      _lineRenderer.SetPosition(LastPositionIndex(), position);
     }
+
+    private int LastPositionIndex() =>
+      _lineRenderer.positionCount - 1;
   }
 }
