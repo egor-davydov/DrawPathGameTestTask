@@ -18,6 +18,7 @@ namespace Code.Infrastructure.States
 
     private void OnLoaded()
     {
+      
     }
 
     public void Exit()
