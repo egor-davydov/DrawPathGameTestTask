@@ -19,6 +19,7 @@ namespace Code.Gameplay
     private bool _speedCalculated;
     private bool _simulationStopped;
     private bool _alreadyWon;
+    
     public bool Started { get; private set; }
     public bool Stopped { get; private set; }
 
@@ -30,10 +31,9 @@ namespace Code.Gameplay
 
     private void Update()
     {
-      if (!Started)
+      if (!Started || Stopped)
         return;
-      if (Stopped)
-        return;
+      
       if (SimulationFinished())
       {
         if (!_alreadyWon)
@@ -64,12 +64,6 @@ namespace Code.Gameplay
       }
     }
 
-    private void Win()
-    {
-      Debug.Log("Win");
-      _alreadyWon = true;
-    }
-
     public bool ShouldStartSimulation() =>
       PathStarts.All(start => start.PathObject != null);
 
@@ -78,6 +72,12 @@ namespace Code.Gameplay
 
     public void StopSimulation() =>
       Stopped = true;
+
+    private void Win()
+    {
+      Debug.Log("Win");
+      _alreadyWon = true;
+    }
 
     private bool SimulationFinished() =>
       PathStarts.All(start => start.SimulationFinished);
