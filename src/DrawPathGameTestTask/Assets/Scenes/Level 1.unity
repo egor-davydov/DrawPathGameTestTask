@@ -123,6 +123,26 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &142253717 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7826941823967589444, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
+  m_PrefabInstance: {fileID: 7826941823742501642}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &142253720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142253717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29ac3aaaa07140f692efe37f198f8803, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PathStarts:
+  - {fileID: 1311212093}
+  - {fileID: 740328987}
 --- !u!1001 &384264448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -732,6 +752,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PathCreator
       objectReference: {fileID: 0}
+    - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
+      propertyPath: Simulation
+      value: 
+      objectReference: {fileID: 142253720}
     - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
       propertyPath: PathStarts.Array.size
       value: 2
