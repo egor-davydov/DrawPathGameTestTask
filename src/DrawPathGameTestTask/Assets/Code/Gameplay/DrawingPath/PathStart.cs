@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Code.Gameplay.DrawingPath
 {
-  public class DrawStart : MonoBehaviour
+  public class PathStart : MonoBehaviour
   {
     [SerializeField]
     private GenderType _genderType;

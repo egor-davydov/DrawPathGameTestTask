@@ -17,7 +17,7 @@ namespace Code.Gameplay.DrawingPath
     private Camera _camera;
     private Vector2 _previousPosition;
     private bool _nowDrawing;
-    private DrawStart _drawStart;
+    private PathStart _pathStart;
 
     private void Awake() =>
       _camera = Camera.main;
@@ -45,7 +45,7 @@ namespace Code.Gameplay.DrawingPath
       {
         if (IsPathEnd(ray))
         {
-          _drawStart.PathObject = _pathObject;
+          _pathStart.PathObject = _pathObject;
           _pathObject = null;
         }
         else
@@ -67,13 +67,13 @@ namespace Code.Gameplay.DrawingPath
       for (var index = 0; index < raycastHitsCount; index++)
       {
         RaycastHit2D raycastHit2D = hits[index];
-        if (!raycastHit2D.transform.TryGetComponent(out DrawStart pathStart))
+        if (!raycastHit2D.transform.TryGetComponent(out PathStart pathStart))
           continue;
 
         if (pathStart.PathObject)
           continue;
 
-        _drawStart = pathStart;
+        _pathStart = pathStart;
         return true;
       }
 
@@ -116,6 +116,6 @@ namespace Code.Gameplay.DrawingPath
     }
 
     private bool PathEndNotSatisfyGender(PathEnd pathEnd) =>
-      pathEnd.GenderTypes.All(pathEndGenderType => pathEndGenderType != _drawStart.GenderType);
+      pathEnd.GenderTypes.All(pathEndGenderType => pathEndGenderType != _pathStart.GenderType);
   }
 }

@@ -7,13 +7,13 @@ namespace Code.Gameplay
 {
   public class Simulation : MonoBehaviour
   {
-    public List<DrawStart> PathStarts;
+    public List<PathStart> PathStarts;
     private void Update()
     {
       if (!ShouldStartSimulation())
         return;
       
-      foreach (DrawStart pathStart in PathStarts)
+      foreach (PathStart pathStart in PathStarts)
       {
         if (pathStart.SimulationFinished)
           continue;
