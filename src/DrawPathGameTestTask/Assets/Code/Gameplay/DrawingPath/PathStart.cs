@@ -1,4 +1,3 @@
-using Code.Infrastructure.States;
 using UnityEngine;
 
 namespace Code.Gameplay.DrawingPath

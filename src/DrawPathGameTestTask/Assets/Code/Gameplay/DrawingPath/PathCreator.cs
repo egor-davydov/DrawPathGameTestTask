@@ -27,9 +27,6 @@ namespace Code.Gameplay.DrawingPath
       if (SimulationStarted())
         return;
       
-      if (!Input.GetButton(FireButtonName))
-        return;
-      
       Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
       
       if (Input.GetButtonDown(FireButtonName) && IsPathStart(ray))
