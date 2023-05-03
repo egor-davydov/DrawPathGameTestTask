@@ -24,11 +24,15 @@ namespace Code.Gameplay.DrawingPath
 
     private void Update()
     {
-      if (SimulationStarted())
+      if (ShouldStartSimulation())
+      {
+        if (!SimulationStarted())
+          Simulation.StartSimulation();
         return;
-      
+      }
+
       Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-      
+
       if (Input.GetButtonDown(FireButtonName) && IsPathStart(ray))
         _nowDrawing = true;
 
@@ -52,7 +56,10 @@ namespace Code.Gameplay.DrawingPath
       }
     }
 
-    private bool SimulationStarted() => 
+    private bool SimulationStarted() =>
+      Simulation.Started;
+
+    private bool ShouldStartSimulation() =>
       Simulation.ShouldStartSimulation();
 
     private bool IsPathStart(Ray ray)

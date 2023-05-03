@@ -17,6 +17,10 @@ namespace Code.Gameplay
     private readonly Dictionary<PathStart, float> _timeToGoNextPosition = new();
     private readonly Dictionary<PathStart, float> _simulationSpeed = new();
     private bool _speedCalculated;
+    private bool _simulationStopped;
+    private bool _alreadyWon;
+    public bool Started { get; private set; }
+    public bool Stopped { get; private set; }
 
     private void Start()
     {
@@ -26,12 +30,20 @@ namespace Code.Gameplay
 
     private void Update()
     {
-      if (!ShouldStartSimulation())
+      if (!Started)
         return;
-      
+      if (Stopped)
+        return;
+      if (SimulationFinished())
+      {
+        if (!_alreadyWon)
+          Win();
+        return;
+      }
+
       if (!_speedCalculated)
         CalculateSimulationSpeed();
-      
+
       UpdateCurrentTime();
       foreach (PathStart pathStart in PathStarts)
       {
@@ -52,8 +64,23 @@ namespace Code.Gameplay
       }
     }
 
+    private void Win()
+    {
+      Debug.Log("Win");
+      _alreadyWon = true;
+    }
+
     public bool ShouldStartSimulation() =>
       PathStarts.All(start => start.PathObject != null);
+
+    public void StartSimulation() =>
+      Started = true;
+
+    public void StopSimulation() =>
+      Stopped = true;
+
+    private bool SimulationFinished() =>
+      PathStarts.All(start => start.SimulationFinished);
 
     private void CalculateSimulationSpeed()
     {
