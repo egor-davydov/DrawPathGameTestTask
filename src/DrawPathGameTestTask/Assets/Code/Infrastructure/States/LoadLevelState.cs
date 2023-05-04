@@ -18,7 +18,7 @@ namespace Code.Infrastructure.States
 
     private void OnLoaded()
     {
-      
+      _gameStateMachine.Enter<DrawingState>();
     }
 
     public void Exit()

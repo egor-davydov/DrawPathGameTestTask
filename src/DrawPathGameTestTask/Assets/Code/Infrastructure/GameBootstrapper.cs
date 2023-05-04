@@ -8,9 +8,10 @@ namespace Code.Infrastructure
   {
     private void Awake()
     {
-      GameStateMachine stateMachine = new GameStateMachine(new SceneLoader(this), new AllServices());
-      
+      GameStateMachine stateMachine = new GameStateMachine(new SceneLoader(this), AllServices.Container);
       stateMachine.Enter<BootstrapState>();
+      
+      DontDestroyOnLoad(this);
     }
   }
 }

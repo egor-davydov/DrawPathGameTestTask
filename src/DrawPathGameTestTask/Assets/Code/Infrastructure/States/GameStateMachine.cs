@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Code.Services;
+using Code.Services.Factories.UI;
 
 namespace Code.Infrastructure.States
 {
-  public class GameStateMachine
+  public class GameStateMachine : IGameStateMachine
   {
     private readonly Dictionary<Type, IExitableState> _states;
 
@@ -16,6 +17,9 @@ namespace Code.Infrastructure.States
       {
         [typeof(BootstrapState)] = new BootstrapState(this, services),
         [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader),
+        [typeof(DrawingState)] = new DrawingState(),
+        [typeof(WinState)] = new WinState(services.Single<IUIFactory>()),
+        [typeof(LoseState)] = new LoseState(services.Single<IUIFactory>()),
       };
     }
 
