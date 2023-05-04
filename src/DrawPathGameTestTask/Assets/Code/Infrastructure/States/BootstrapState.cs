@@ -1,6 +1,7 @@
 using Code.Services;
 using Code.Services.AssetManagement;
 using Code.Services.Factories.UI;
+using Code.Services.Level;
 
 namespace Code.Infrastructure.States
 {
@@ -16,7 +17,7 @@ namespace Code.Infrastructure.States
       RegisterServices();
     }
 
-    public void Enter() => 
+    public void Enter() =>
       _gameStateMachine.Enter<LoadLevelState, string>("Level 1");
 
     public void Exit()
@@ -27,9 +28,12 @@ namespace Code.Infrastructure.States
     {
       _services.RegisterSingle<IAssetProvider>(new AssetProvider());
       _services.RegisterSingle<IGameStateMachine>(_gameStateMachine);
+      _services.RegisterSingle<ILevelService>(new LevelService());
 
       _services.RegisterSingle<IUIFactory>(new UIFactory(
-        _services.Single<IAssetProvider>()
+        _services.Single<IAssetProvider>(),
+        _services.Single<IGameStateMachine>(),
+        _services.Single<ILevelService>()
       ));
     }
   }
