@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Code.Infrastructure.States;
+using Code.Services;
 using UnityEngine;
 
 namespace Code.Gameplay
@@ -17,12 +18,13 @@ namespace Code.Gameplay
     private bool _simulationStopped;
     private bool _lose;
     
-    private GameStateMachine _gameStateMachine;
+    private IGameStateMachine _gameStateMachine;
 
     public float SimulationTime => _simulationTime;
 
     private void Start()
     {
+      _gameStateMachine = AllServices.Container.Single<IGameStateMachine>();
       foreach (SimulationActor simulationActor in _simulationActors)
       {
         simulationActor.Finished += OnActorFinished;
@@ -53,8 +55,8 @@ namespace Code.Gameplay
 
     private void Lose()
     {
-      Debug.Log("Lose");
       _lose = true;
+      _gameStateMachine.Enter<LoseState>();
     }
 
     public void StartSimulation()
@@ -71,8 +73,7 @@ namespace Code.Gameplay
 
     private void Win()
     {
-      //_gameStateMachine.Enter<WinState>();
-      Debug.Log("Win");
+      _gameStateMachine.Enter<WinState>();
     }
 
     private bool AllActorsFinished() =>
