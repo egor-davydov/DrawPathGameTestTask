@@ -19,6 +19,7 @@ namespace Code.Gameplay
     private bool _simulationStopped;
     private bool _alreadyWon;
     private PathObject PathObject => _pathActor.PathObject;
+    
     public bool SimulationStarted { get; private set; }
     public bool SimulationStopped { get; private set; }
     public bool SimulationFinished { get; private set; }
@@ -51,12 +52,6 @@ namespace Code.Gameplay
         CalculateTimeToGoNextPosition();
     }
 
-    private void FinishSimulation()
-    {
-      SimulationFinished = true;
-      Finished?.Invoke();
-    }
-
     public void StartSimulation() =>
       SimulationStarted = true;
 
@@ -64,6 +59,12 @@ namespace Code.Gameplay
     {
       SimulationStopped = true;
       Stopped?.Invoke();
+    }
+
+    private void FinishSimulation()
+    {
+      SimulationFinished = true;
+      Finished?.Invoke();
     }
 
     private void CalculateSimulationSpeed()

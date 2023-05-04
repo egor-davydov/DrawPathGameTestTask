@@ -16,6 +16,9 @@ namespace Code.Infrastructure.States
       {
         [typeof(BootstrapState)] = new BootstrapState(this, services),
         [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader),
+        [typeof(DrawingState)] = new DrawingState(),
+        [typeof(WinState)] = new WinState(this),
+        [typeof(LoseState)] = new LoseState(this),
       };
     }
 

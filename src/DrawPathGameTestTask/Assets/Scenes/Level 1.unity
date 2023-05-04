@@ -232,6 +232,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 142253720}
     - target: {fileID: 7729782244730543103, guid: be2cd6d077c13cf4dbfcb055a0bffa97, type: 3}
+      propertyPath: _pathActor
+      value: 
+      objectReference: {fileID: 1311212093}
+    - target: {fileID: 7729782244730543103, guid: be2cd6d077c13cf4dbfcb055a0bffa97, type: 3}
       propertyPath: _simulationObserver
       value: 
       objectReference: {fileID: 142253720}
@@ -467,6 +471,10 @@ PrefabInstance:
       propertyPath: _simulation
       value: 
       objectReference: {fileID: 142253720}
+    - target: {fileID: 7729782244730543103, guid: be2cd6d077c13cf4dbfcb055a0bffa97, type: 3}
+      propertyPath: _pathActor
+      value: 
+      objectReference: {fileID: 740328987}
     - target: {fileID: 7729782244730543103, guid: be2cd6d077c13cf4dbfcb055a0bffa97, type: 3}
       propertyPath: _simulationObserver
       value: 
@@ -808,7 +816,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 142253720}
     - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
+      propertyPath: _simulationObserver
+      value: 
+      objectReference: {fileID: 142253720}
+    - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
       propertyPath: PathStarts.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
+      propertyPath: _pathActors.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
@@ -821,6 +837,14 @@ PrefabInstance:
       objectReference: {fileID: 1311212093}
     - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
       propertyPath: PathStarts.Array.data[1]
+      value: 
+      objectReference: {fileID: 740328987}
+    - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
+      propertyPath: _pathActors.Array.data[0]
+      value: 
+      objectReference: {fileID: 1311212093}
+    - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
+      propertyPath: _pathActors.Array.data[1]
       value: 
       objectReference: {fileID: 740328987}
     - target: {fileID: 7826941823967589445, guid: 93047a71ea33608419e698a9263cc89b, type: 3}
