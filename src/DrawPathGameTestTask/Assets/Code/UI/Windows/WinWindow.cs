@@ -22,7 +22,10 @@ namespace Code.UI.Windows
     private void Start() => 
       _nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
 
-    private void OnNextLevelButtonClick() => 
-      _gameStateMachine.Enter<LoadLevelState, string>(_levelService.NextLevelName());
+    private void OnNextLevelButtonClick()
+    {
+      string nextLevelName = _levelService.NextLevelName();
+      _gameStateMachine.Enter<LoadLevelState, string>(nextLevelName);
+    }
   }
 }

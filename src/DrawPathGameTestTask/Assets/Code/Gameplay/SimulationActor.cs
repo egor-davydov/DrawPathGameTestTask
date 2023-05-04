@@ -30,7 +30,7 @@ namespace Code.Gameplay
     private void OnCollisionEnter2D(Collision2D col) =>
       _simulationObserver.StopSimulation();
     
-    private void Update()
+    private void FixedUpdate()
     {
       if (!SimulationStarted || SimulationFinished || SimulationStopped)
         return;
