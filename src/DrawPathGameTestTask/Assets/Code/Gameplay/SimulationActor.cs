@@ -1,4 +1,5 @@
-﻿using Code.Gameplay.DrawingPath;
+﻿using System;
+using Code.Gameplay.DrawingPath;
 using UnityEngine;
 
 namespace Code.Gameplay
@@ -6,10 +7,10 @@ namespace Code.Gameplay
   public class SimulationActor : MonoBehaviour
   {
     [SerializeField]
-    private float SimulationTime = 3f;
+    private SimulationObserver _simulationObserver;
 
     [SerializeField]
-    private PathStart _pathStart;
+    private PathActor _pathActor;
 
     private float _currentSimulationTime;
     private float _timeToGoNextPosition;
@@ -17,65 +18,71 @@ namespace Code.Gameplay
     private bool _speedCalculated;
     private bool _simulationStopped;
     private bool _alreadyWon;
+    private PathObject PathObject => _pathActor.PathObject;
+    public bool SimulationStarted { get; private set; }
+    public bool SimulationStopped { get; private set; }
+    public bool SimulationFinished { get; private set; }
+    
+    public event Action Finished;
+    public event Action Stopped;
 
-    public bool Started { get; private set; }
-    public bool Stopped { get; private set; }
+    private void OnCollisionEnter2D(Collision2D col) =>
+      _simulationObserver.StopSimulation();
     
     private void Update()
     {
-      if (!Started || Stopped)
+      if (!SimulationStarted || SimulationFinished || SimulationStopped)
         return;
-      
+
       if (!_speedCalculated)
         CalculateSimulationSpeed();
 
       UpdateCurrentTime();
-        if (_pathStart.SimulationFinished)
-          return;
-        
-        PathObject pathObject = _pathStart.PathObject;
 
-        if (!TimeToGoNextPosition(_pathStart))
-          return;
+      if (!IsTimeToGoNextPosition())
+        return;
 
-        Vector3 nextPosition = pathObject.NextPosition();
-        pathObject.MoveNextPosition();
-        TranslateToNextPosition(_pathStart, nextPosition);
-        if (nextPosition == pathObject.LastPosition())
-          _pathStart.SimulationFinished = true;
-        else
-          CalculateTimeToGoNextPosition(_pathStart);
+      Vector3 nextPosition = PathObject.NextPosition();
+      PathObject.MoveNextPosition();
+      TranslateToNextPosition(nextPosition);
+      if (nextPosition == PathObject.LastPosition())
+        FinishSimulation();
+      else
+        CalculateTimeToGoNextPosition();
+    }
+
+    private void FinishSimulation()
+    {
+      SimulationFinished = true;
+      Finished?.Invoke();
     }
 
     public void StartSimulation() =>
-      Started = true;
+      SimulationStarted = true;
 
-    public void StopSimulation() =>
-      Stopped = true;
-
-    private void Win()
+    public void StopSimulation()
     {
-      Debug.Log("Win");
-      _alreadyWon = true;
+      SimulationStopped = true;
+      Stopped?.Invoke();
     }
 
     private void CalculateSimulationSpeed()
     {
-      _simulationSpeed = _pathStart.PathObject.Length() / SimulationTime;
+      _simulationSpeed = _pathActor.PathObject.Length() / _simulationObserver.SimulationTime;
       _speedCalculated = true;
     }
 
     private void UpdateCurrentTime() =>
       _currentSimulationTime += Time.deltaTime;
 
-    private bool TimeToGoNextPosition(PathStart pathStart) =>
+    private bool IsTimeToGoNextPosition() =>
       _currentSimulationTime > _timeToGoNextPosition;
 
-    private static void TranslateToNextPosition(PathStart pathStart, Vector3 nextPosition) =>
-      pathStart.transform.Translate(nextPosition - pathStart.transform.position);
+    private void TranslateToNextPosition(Vector3 nextPosition) =>
+      _pathActor.transform.Translate(nextPosition - _pathActor.transform.position);
 
-    private void CalculateTimeToGoNextPosition(PathStart pathStart) =>
-      _timeToGoNextPosition = pathStart.PathObject.DistanceToNextPosition() / _simulationSpeed
-                                         + _currentSimulationTime;
+    private void CalculateTimeToGoNextPosition() =>
+      _timeToGoNextPosition = _pathActor.PathObject.DistanceToNextPosition() / _simulationSpeed
+                              + _currentSimulationTime;
   }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Code.Gameplay.DrawingPath
@@ -10,31 +11,54 @@ namespace Code.Gameplay.DrawingPath
     private const string PathStartLayerName = "PathStart";
     private const string PathEndLayerName = "PathEnd";
 
-    public PathObject PathObjectPrefab;
-    public Simulation Simulation;
+    [SerializeField]
+    private List<PathActor> _pathActors;
+
+    [SerializeField]
+    private PathObject PathObjectPrefab;
+
+    [SerializeField]
+    private SimulationObserver _simulationObserver;
 
     private PathObject _pathObject;
     private Camera _camera;
     private Vector2 _previousPosition;
     private bool _nowDrawing;
-    private PathStart _pathStart;
+    private PathActor _pathActor;
 
     private void Awake() =>
       _camera = Camera.main;
 
-    private void Update()
+    private void Start()
     {
-      if (ShouldStartSimulation())
-      {
-        if (!SimulationStarted())
-          Simulation.StartSimulation();
-        return;
-      }
+      foreach (PathActor pathActor in _pathActors)
+        pathActor.PathFinished += OnPathFinished;
+    }
 
+    private void Update() => 
+      PathCreating();
+
+    private void OnDestroy()
+    {
+      foreach (PathActor pathActor in _pathActors)
+        pathActor.PathFinished -= OnPathFinished;
+    }
+
+    private void OnPathFinished()
+    {
+      if(AllPathsFinished())
+        _simulationObserver.StartSimulation();
+    }
+
+    private bool AllPathsFinished() =>
+      _pathActors.All(pathStart => pathStart.HasFinishedPath);
+
+    private void PathCreating()
+    {
       Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
       if (Input.GetButtonDown(FireButtonName) && IsPathStart(ray))
-        _nowDrawing = true;
+        StartDrawing();
 
       if (!_nowDrawing)
         return;
@@ -42,25 +66,12 @@ namespace Code.Gameplay.DrawingPath
       if (Input.GetButton(FireButtonName))
         Draw(ray.origin);
 
-      if (Input.GetButtonUp(FireButtonName))
-      {
-        if (IsPathEnd(ray))
-        {
-          _pathStart.PathObject = _pathObject;
-          _pathObject = null;
-        }
-        else
-          Destroy(_pathObject.gameObject);
-
-        _nowDrawing = false;
-      }
+      if (Input.GetButtonUp(FireButtonName)) 
+        FinishDrawing(ray);
     }
 
-    private bool SimulationStarted() =>
-      Simulation.Started;
-
-    private bool ShouldStartSimulation() =>
-      Simulation.ShouldStartSimulation();
+    private void StartDrawing() => 
+      _nowDrawing = true;
 
     private bool IsPathStart(Ray ray)
     {
@@ -71,18 +82,19 @@ namespace Code.Gameplay.DrawingPath
       for (var index = 0; index < raycastHitsCount; index++)
       {
         RaycastHit2D raycastHit2D = hits[index];
-        if (!raycastHit2D.transform.TryGetComponent(out PathStart pathStart))
+        if (!raycastHit2D.transform.TryGetComponent(out PathActor pathActor))
           continue;
 
-        if (pathStart.PathObject)
+        if (pathActor.HasFinishedPath)
           continue;
 
-        _pathStart = pathStart;
+        _pathActor = pathActor;
         return true;
       }
 
       return false;
     }
+
 
     private void Draw(Vector2 position)
     {
@@ -94,6 +106,19 @@ namespace Code.Gameplay.DrawingPath
           _pathObject.AddPosition(position);
         _previousPosition = position;
       }
+    }
+
+    private void FinishDrawing(Ray ray)
+    {
+      if (IsPathEnd(ray))
+      {
+        _pathActor.FinishPath(_pathObject);
+        _pathObject = null;
+      }
+      else
+        Destroy(_pathObject.gameObject);
+
+      _nowDrawing = false;
     }
 
     private bool IsPathEnd(Ray ray)
@@ -120,6 +145,6 @@ namespace Code.Gameplay.DrawingPath
     }
 
     private bool PathEndNotSatisfyGender(PathEnd pathEnd) =>
-      pathEnd.GenderTypes.All(pathEndGenderType => pathEndGenderType != _pathStart.GenderType);
+      pathEnd.GenderTypes.All(pathEndGenderType => pathEndGenderType != _pathActor.GenderType);
   }
 }
