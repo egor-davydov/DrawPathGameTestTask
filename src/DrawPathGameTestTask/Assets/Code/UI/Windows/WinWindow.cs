@@ -19,8 +19,12 @@ namespace Code.UI.Windows
       _gameStateMachine = gameStateMachine;
     }
     
-    private void Start() => 
+    private void Start()
+    {
       _nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
+      if(!_levelService.HasNextLevel())
+        _nextLevelButton.gameObject.SetActive(false);
+    }
 
     private void OnNextLevelButtonClick()
     {

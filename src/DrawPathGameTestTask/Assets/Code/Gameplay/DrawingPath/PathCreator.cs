@@ -6,7 +6,7 @@ namespace Code.Gameplay.DrawingPath
 {
   public class PathCreator : MonoBehaviour
   {
-    private const double PixelPositionEpsilon = 0.01;
+    private const double PixelPositionEpsilon = 0.05;
     private const string FireButtonName = "Fire1";
     private const string PathStartLayerName = "PathStart";
     private const string PathEndLayerName = "PathEnd";

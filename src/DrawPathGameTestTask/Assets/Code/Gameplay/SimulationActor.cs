@@ -29,20 +29,20 @@ namespace Code.Gameplay
 
     private void OnCollisionEnter2D(Collision2D col) =>
       _simulationObserver.StopSimulation();
-    
-    private void FixedUpdate()
+
+    private void Start() => 
+      _pathActor.PathFinished += CalculateSimulationSpeed;
+
+    private void Update()
     {
       if (!SimulationStarted || SimulationFinished || SimulationStopped)
         return;
-
-      if (!_speedCalculated)
-        CalculateSimulationSpeed();
 
       UpdateCurrentTime();
 
       if (!IsTimeToGoNextPosition())
         return;
-
+      
       Vector3 nextPosition = PathObject.NextPosition();
       PathObject.MoveNextPosition();
       TranslateToNextPosition(nextPosition);
@@ -67,11 +67,8 @@ namespace Code.Gameplay
       Finished?.Invoke();
     }
 
-    private void CalculateSimulationSpeed()
-    {
-      _simulationSpeed = _pathActor.PathObject.Length() / _simulationObserver.SimulationTime;
-      _speedCalculated = true;
-    }
+    private void CalculateSimulationSpeed() => 
+      _simulationSpeed = PathObject.Length() / _simulationObserver.SimulationTime;
 
     private void UpdateCurrentTime() =>
       _currentSimulationTime += Time.deltaTime;

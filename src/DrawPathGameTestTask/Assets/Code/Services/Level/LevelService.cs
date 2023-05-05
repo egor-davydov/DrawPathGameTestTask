@@ -14,6 +14,9 @@ namespace Code.Services.Level
       return nameWithFileType.Substring(0, indexBeforeFileType);
     }
 
+    public bool HasNextLevel() => 
+      CurrentLevel().buildIndex < SceneManager.sceneCountInBuildSettings-1;
+
     public string CurrentLevelName() =>
       CurrentLevel().name;
 
