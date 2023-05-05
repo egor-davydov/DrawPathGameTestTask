@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Code.Gameplay.DrawingPath
@@ -9,10 +10,18 @@ namespace Code.Gameplay.DrawingPath
     
     private LineRenderer _lineRenderer;
     private int _currentPosition;
+    private Dictionary<GenderType, Color> _colors;
 
-
-    private void Awake() =>
+    private void Awake()
+    {
       _lineRenderer = GetComponent<LineRenderer>();
+      
+      _colors = new Dictionary<GenderType, Color>
+      {
+        [GenderType.Man] = Color.cyan,
+        [GenderType.Woman] = Color.magenta,
+      };
+    }
 
     private void Start()
     {
@@ -20,6 +29,12 @@ namespace Code.Gameplay.DrawingPath
       _lineRenderer.endWidth = _lineWidth;
     }
 
+    public void ChangeColor(GenderType genderType)
+    {
+      _lineRenderer.startColor = _colors[genderType];
+      _lineRenderer.endColor = _colors[genderType];
+    }
+    
     public void AddPosition(Vector3 position)
     {
       _lineRenderer.positionCount++;

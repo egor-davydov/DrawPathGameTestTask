@@ -99,7 +99,10 @@ namespace Code.Gameplay.DrawingPath
     private void Draw(Vector2 position)
     {
       if (_pathObject == null)
+      {
         _pathObject = Instantiate(PathObjectPrefab);
+        _pathObject.ChangeColor(_pathActor.GenderType);
+      }
       else
       {
         if (!(Vector2.Distance(position, _previousPosition) > PixelPositionEpsilon))
