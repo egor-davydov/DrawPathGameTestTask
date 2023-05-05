@@ -19,9 +19,9 @@ namespace Code.Gameplay
     private bool _simulationStopped;
     private bool _alreadyWon;
     private PathObject PathObject => _pathActor.PathObject;
-    
-    public bool SimulationStarted { get; private set; }
-    public bool SimulationStopped { get; private set; }
+
+    private bool SimulationStarted { get; set; }
+    private bool SimulationStopped { get; set; }
     public bool SimulationFinished { get; private set; }
     
     public event Action Finished;

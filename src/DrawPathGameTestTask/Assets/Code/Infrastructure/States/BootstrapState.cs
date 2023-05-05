@@ -17,11 +17,8 @@ namespace Code.Infrastructure.States
       RegisterServices();
     }
 
-    public void Enter()
-    {
-      //_services.Single<ILevelService>().LoadAllLevels();
+    public void Enter() => 
       _gameStateMachine.Enter<LoadLevelState, string>("Level 1");
-    }
 
     public void Exit()
     {

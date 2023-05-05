@@ -4,11 +4,21 @@ namespace Code.Gameplay.DrawingPath
 {
   public class PathObject : MonoBehaviour
   {
+    [SerializeField]
+    private float _lineWidth = 1.0f;
+    
     private LineRenderer _lineRenderer;
     private int _currentPosition;
 
+
     private void Awake() =>
       _lineRenderer = GetComponent<LineRenderer>();
+
+    private void Start()
+    {
+      _lineRenderer.startWidth = _lineWidth;
+      _lineRenderer.endWidth = _lineWidth;
+    }
 
     public void AddPosition(Vector3 position)
     {

@@ -6,7 +6,7 @@ namespace Code.Gameplay.DrawingPath
 {
   public class PathCreator : MonoBehaviour
   {
-    private const double PixelPositionEpsilon = 0.05;
+    private const double PixelPositionEpsilon = 0.1;
     private const string FireButtonName = "Fire1";
     private const string PathStartLayerName = "PathStart";
     private const string PathEndLayerName = "PathEnd";
@@ -35,7 +35,7 @@ namespace Code.Gameplay.DrawingPath
         pathActor.PathFinished += OnPathFinished;
     }
 
-    private void Update() => 
+    private void Update() =>
       PathCreating();
 
     private void OnDestroy()
@@ -46,7 +46,7 @@ namespace Code.Gameplay.DrawingPath
 
     private void OnPathFinished()
     {
-      if(AllPathsFinished())
+      if (AllPathsFinished())
         _simulationObserver.StartSimulation();
     }
 
@@ -66,11 +66,11 @@ namespace Code.Gameplay.DrawingPath
       if (Input.GetButton(FireButtonName))
         Draw(ray.origin);
 
-      if (Input.GetButtonUp(FireButtonName)) 
+      if (Input.GetButtonUp(FireButtonName))
         FinishDrawing(ray);
     }
 
-    private void StartDrawing() => 
+    private void StartDrawing() =>
       _nowDrawing = true;
 
     private bool IsPathStart(Ray ray)
@@ -102,8 +102,10 @@ namespace Code.Gameplay.DrawingPath
         _pathObject = Instantiate(PathObjectPrefab);
       else
       {
-        if (Vector2.Distance(position, _previousPosition) > PixelPositionEpsilon)
-          _pathObject.AddPosition(position);
+        if (!(Vector2.Distance(position, _previousPosition) > PixelPositionEpsilon))
+          return;
+        
+        _pathObject.AddPosition(position);
         _previousPosition = position;
       }
     }

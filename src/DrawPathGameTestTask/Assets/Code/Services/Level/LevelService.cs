@@ -20,12 +20,6 @@ namespace Code.Services.Level
     public string CurrentLevelName() =>
       CurrentLevel().name;
 
-    public void LoadAllLevels()
-    {
-      for (int i = 1; i < SceneManager.sceneCountInBuildSettings; i++)
-        SceneManager.LoadScene(i);
-    }
-    
     private Scene CurrentLevel() =>
       SceneManager.GetActiveScene();
   }
