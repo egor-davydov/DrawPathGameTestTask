@@ -15,8 +15,7 @@ namespace Code.Gameplay.DrawingPath
 
     public bool HasFinishedPath => _pathObject != null;
     public PathObject PathObject => _pathObject;
-
-
+    
     public void FinishPath(PathObject pathObject)
     {
       _pathObject = pathObject;

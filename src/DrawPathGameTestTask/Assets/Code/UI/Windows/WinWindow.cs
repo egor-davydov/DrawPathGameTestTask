@@ -10,6 +10,9 @@ namespace Code.UI.Windows
     [SerializeField]
     private Button _nextLevelButton;
 
+    [SerializeField]
+    private Button _restartButton;
+
     private IGameStateMachine _gameStateMachine;
     private ILevelService _levelService;
 
@@ -19,10 +22,18 @@ namespace Code.UI.Windows
       _gameStateMachine = gameStateMachine;
     }
     
-    private void Start() => 
+    private void Start()
+    {
       _nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
+      _restartButton.onClick.AddListener(OnRestartButtonClick);
+      if(!_levelService.HasNextLevel())
+        _nextLevelButton.gameObject.SetActive(false);
+    }
 
     private void OnNextLevelButtonClick() => 
       _gameStateMachine.Enter<LoadLevelState, string>(_levelService.NextLevelName());
+
+    private void OnRestartButtonClick() => 
+      _gameStateMachine.Enter<LoadLevelState, string>(_levelService.CurrentLevelName());
   }
 }

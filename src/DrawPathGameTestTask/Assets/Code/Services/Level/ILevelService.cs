@@ -4,5 +4,6 @@
   {
     string NextLevelName();
     string CurrentLevelName();
+    bool HasNextLevel();
   }
 }
